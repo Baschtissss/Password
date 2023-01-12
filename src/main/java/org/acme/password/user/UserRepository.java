@@ -2,6 +2,7 @@ package org.acme.password.user;
 
 
 import lombok.NonNull;
+import org.acme.Hash.HashMethods;
 import org.acme.unicornrides.passenger.Passenger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -22,5 +23,11 @@ public class UserRepository {
         return user;
     }
 
+    public static boolean checkPassword(@NonNull final User user, String input){
+        if(HashMethods.hashPassword(input, user.getSalt()) == user.getPassword())
+            return true;
+        else
+            return false;
+    }
 
 }
