@@ -4,6 +4,8 @@ package org.acme.password.user;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Getter
 @Setter
@@ -16,4 +18,10 @@ import javax.persistence.Entity;
 
 @Entity
 public class User {
+    @Id
+    private String email;
+
+    private String password;
+
+    private String telephoneNumber;
 }
