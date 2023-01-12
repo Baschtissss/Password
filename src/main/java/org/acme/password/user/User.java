@@ -14,8 +14,6 @@ import javax.persistence.Id;
 @ToString
 @EqualsAndHashCode
 
-
-
 @Entity
 public class User {
     @Id
@@ -26,4 +24,10 @@ public class User {
     private String telephoneNumber;
 
     private String salt;
+
+    public User(String email, String pw, String phone){
+        setPassword(pw);
+        setEmail(email);
+        setTelephoneNumber(phone);
+    }
 }

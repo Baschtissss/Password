@@ -17,8 +17,8 @@ public class UserRepository {
 
     @Transactional
     public User registerUser(@NonNull final User user) {
-        if(entityManager.find(User.class, user.getEmail()) != null)
-            entityManager.persist(user);
+        //if(entityManager.find(User.class, user.getEmail()) != null)
+        entityManager.persist(user);
         return user;
     }
 
