@@ -12,6 +12,7 @@ public class HashMethods {
 
     static Random RANDOM = new Random();
 
+    //generates 16 bytes
     public static byte[] saltGenerator() {
         byte[] salt = new byte[16];
         RANDOM.nextBytes(salt);
