@@ -24,12 +24,12 @@ public class User {
 
     private String telephoneNumber;
 
-    private String salt;
+    private byte[] salt;
 
     public User(String email, String pw, String phone){
-        setPassword(pw);
+        setSalt(HashMethods.saltGenerator());
+        setPassword(HashMethods.hashPassword(pw, getSalt()));
         setEmail(email);
         setTelephoneNumber(phone);
-        setSalt(HashMethods.saltGenerator());
     }
 }
