@@ -20,6 +20,7 @@ public class HashMethods {
         return salt;
     }
 
+    //using Hash Algorithm SHA-512
     public static String hashPassword(String pw, byte[] salt) {
         MessageDigest md = null;
         try {
