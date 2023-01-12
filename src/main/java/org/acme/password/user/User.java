@@ -2,6 +2,7 @@ package org.acme.password.user;
 
 
 import lombok.*;
+import org.acme.Hash.HashMethods;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,5 +30,6 @@ public class User {
         setPassword(pw);
         setEmail(email);
         setTelephoneNumber(phone);
+        setSalt(HashMethods.saltGenerator());
     }
 }
