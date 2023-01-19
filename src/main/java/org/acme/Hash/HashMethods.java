@@ -24,13 +24,17 @@ public class HashMethods {
     public static String hashPassword(String pw, byte[] salt) {
         MessageDigest md = null;
         try {
-            md = MessageDigest.getInstance("SHA-512");
+            md = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-        md.update(salt);
-        byte[] hashedPassword = md.digest(pw.getBytes(StandardCharsets.UTF_8));
+        md.update((pw + salt.toString()).getBytes());
 
-        return hashedPassword.toString();
+        byte[] bytes = md.digest();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < bytes.length; i++) {
+            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
     }
 }
