@@ -24,7 +24,7 @@ public class HashMethods {
     public static String hashPassword(String pw, byte[] salt) {
         MessageDigest md = null;
         try {
-            md = MessageDigest.getInstance("MD5");
+            md = MessageDigest.getInstance("SHA-512");
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
