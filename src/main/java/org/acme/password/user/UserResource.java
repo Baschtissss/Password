@@ -1,14 +1,10 @@
 package org.acme.password.user;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.acme.unicornrides.passenger.Passenger;
-import org.acme.unicornrides.unicorn.Unicorn;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.util.Collection;
 
 @Path("api/user")
 public class UserResource {
@@ -27,11 +23,20 @@ public class UserResource {
 
     @GET
     @Path("/check")
-    public Response findByName(@QueryParam("email") final String email, @QueryParam("password") final String password) {
+    public Response checkPassword(@QueryParam("email") final String email, @QueryParam("password") final String password) {
         if (email == null || password == null) {
+            System.out.println("Missing param");
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        final boolean correct = userRepository.checkPassword(new User(), password);
+        User user = userRepository.getUserByEmail(email);
+        if(user == null) {
+            System.out.println("No user found!");
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        System.out.println("User found!");
+
+        final boolean correct = userRepository.checkPassword(user, password);
         return Response.ok(correct).build();
     }
 }

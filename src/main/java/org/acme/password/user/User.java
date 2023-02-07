@@ -32,12 +32,17 @@ public class User {
 
     private String telephoneNumber;
 
-    private byte[] salt;
+    private String salt;
 
     public User(String email,String pw, String phone){
         setSalt(HashMethods.saltGenerator());
-        setPassword(HashMethods.hashPassword(pw, getSalt()  ));
+        setPassword(HashMethods.hashPassword(pw, getSalt()));
         setEmail(email);
         setTelephoneNumber(phone);
+    }
+
+    public void hashPw(){
+        setSalt(HashMethods.saltGenerator());
+        setPassword(HashMethods.hashPassword(getPassword(), getSalt()  ));
     }
 }

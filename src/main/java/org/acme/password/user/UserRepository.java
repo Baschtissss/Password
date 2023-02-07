@@ -3,7 +3,6 @@ package org.acme.password.user;
 
 import lombok.NonNull;
 import org.acme.Hash.HashMethods;
-import org.acme.unicornrides.passenger.Passenger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -20,6 +19,10 @@ public class UserRepository {
 
     @Transactional
     public User registerUser(@NonNull @Valid final User user) {
+
+        if(user.getSalt() == null)
+            user.hashPw();
+
         if(entityManager.find(User.class, user.getEmail()) != null)
             return null;
         entityManager.persist(user);
@@ -32,12 +35,17 @@ public class UserRepository {
     }
 
     public boolean checkPassword(final User user, String input){
+        System.out.println("???");
         if(user == null)
             return false;
         if(Objects.equals(HashMethods.hashPassword(input, user.getSalt()), user.getPassword()))
             return true;
         else
             return false;
+    }
+
+    public User getUserByEmail(String email){
+        return entityManager.find(User.class,email);
     }
 
 }

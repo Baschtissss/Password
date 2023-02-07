@@ -2,10 +2,8 @@ package org.acme.password;
 
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
-import org.acme.Hash.HashMethods;
 import org.acme.password.user.User;
 import org.acme.password.user.UserRepository;
-import org.acme.unicornrides.passenger.Passenger;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -14,8 +12,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
-import java.time.LocalDate;
-import java.util.Arrays;
 
 @QuarkusTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
