@@ -35,7 +35,7 @@ public class UserResourceTest {
     @Test
     public void testCheckPassword(){
         User user = new User("josef@gmail.com", "Sicher123", "+43 667667");
-        Mockito.when(repository.checkPassword(ArgumentMatchers.any(User.class),ArgumentMatchers.anyString())).thenReturn(true);
+        Mockito.when(repository.checkPassword(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenReturn(true);
         Mockito.when(repository.getUserByEmail(ArgumentMatchers.anyString())).thenReturn(user);
 
         RestAssured.given().when()
@@ -47,7 +47,7 @@ public class UserResourceTest {
     @Test
     public void testCheckPasswordWrongPw(){
         User user = new User("josef@gmail.com", "Sicher123", "+43 667667");
-        Mockito.when(repository.checkPassword(ArgumentMatchers.any(User.class),ArgumentMatchers.anyString())).thenReturn(false);
+        Mockito.when(repository.checkPassword(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenReturn(false);
         Mockito.when(repository.getUserByEmail(ArgumentMatchers.anyString())).thenReturn(user);
 
         RestAssured.given().when()
@@ -58,7 +58,7 @@ public class UserResourceTest {
 
     @Test
     public void testCheckPasswordWithNotExistingUser(){
-        Mockito.when(repository.checkPassword(ArgumentMatchers.any(User.class),ArgumentMatchers.anyString())).thenReturn(false);
+        Mockito.when(repository.checkPassword(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenReturn(false);
         Mockito.when(repository.getUserByEmail(ArgumentMatchers.anyString())).thenReturn(null);
 
         RestAssured.given().when()

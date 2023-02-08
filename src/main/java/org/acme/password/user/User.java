@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Random;
 
 @Getter
 @Setter
@@ -32,7 +33,7 @@ public class User {
 
     private String telephoneNumber;
 
-    private byte[] salt;
+    private String salt;
 
     public User(String email,String pw, String phone){
         setSalt(HashMethods.saltGenerator());
@@ -44,5 +45,17 @@ public class User {
     public void hashPw(){
         setSalt(HashMethods.saltGenerator());
         setPassword(HashMethods.hashPassword(getPassword(), getSalt()  ));
+    }
+
+    public String generatePassword(){
+        Random random = new Random();
+
+        StringBuilder temp = new StringBuilder();
+        for(int i = 0; i<8;i++){
+            temp.append((char) random.nextInt(65, 91));
+        }
+        setPassword(HashMethods.hashPassword(temp.toString(), getSalt()));
+        return temp.toString();
+
     }
 }

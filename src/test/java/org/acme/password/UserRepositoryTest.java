@@ -2,6 +2,7 @@ package org.acme.password;
 
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
+import org.acme.Hash.HashMethods;
 import org.acme.password.user.User;
 import org.acme.password.user.UserRepository;
 import org.assertj.core.api.Assertions;
@@ -88,10 +89,13 @@ public class UserRepositoryTest {
     @TestTransaction
     @Order(15)
     public void testCheckPassword(){
-        User user = new User("hans@gmail.com","1234567B",null);
+        String email = "hans@gmail.com";
+        User user = new User(email,"1234567B",null);
         user = userRepository.registerUser(user);
-        Assertions.assertThat(userRepository.checkPassword(user, "1234567B")).isEqualTo(true);
-        Assertions.assertThat(userRepository.checkPassword(user, "1234457b")).isEqualTo(false);
+        System.out.println("1234567B");
+        Assertions.assertThat(userRepository.checkPassword(email, "1234567B")).isEqualTo(true);
+        System.out.println("1234567b");
+        Assertions.assertThat(userRepository.checkPassword(email, "1234457b")).isEqualTo(false);
     }
 
     @Test
@@ -101,5 +105,31 @@ public class UserRepositoryTest {
         Assertions.assertThat(userRepository.checkPassword(null, "12345")).isEqualTo(false);
     }
 
+    @Test
+    @TestTransaction
+    public void testForgotCode() {
+        String email = "hans@gmail.com";
+        User user = new User(email, "1234567B", null);
+        user = userRepository.registerUser(user);
 
+        String code = userRepository.forgotPassword(email);
+        String check = userRepository.checkCode(email, code);
+
+        Assertions.assertThat(check).isNotEqualTo(null);
+        Assertions.assertThat(userRepository.checkPassword(email, check)).isEqualTo(true);
+    }
+
+    @Test
+    @TestTransaction
+    public void testChangePassword(){
+        String email = "hans@gmail.com";
+        String pwOld = "1234567B";
+        String pwNew = "Test123";
+        User user = new User(email, pwOld, null);
+        user = userRepository.registerUser(user);
+
+        user.setPassword(HashMethods.hashPassword(pwNew,user.getSalt()));
+        boolean change = userRepository.changePassword(email,pwOld,pwNew);
+        Assertions.assertThat(userRepository.checkPassword(email,pwNew)).isEqualTo(true);
+    }
 }

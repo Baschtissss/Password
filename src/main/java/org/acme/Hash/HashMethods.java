@@ -17,23 +17,17 @@ public class HashMethods {
     static Random RANDOM = new Random();
 
     //generates 16 bytes
-    public static byte[] saltGenerator() {
+    public static String saltGenerator() {
         byte[] salt = new byte[16];
         RANDOM.nextBytes(salt);
 
-        return salt;
+        return salt.toString();
 
-        /*StringBuilder salt = new StringBuilder();
-
-        for(int i = 0; i< 16; i++){
-            salt.append((char) RANDOM.nextInt(0, 255));
-        }
-        return salt.toString();*/
     }
 
 
     //using Hash Algorithm SHA-512
-    /*public static String hashPassword(String pw, String salt) {
+    public static String hashPassword(String pw, String salt) {
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("SHA-512");
@@ -48,16 +42,16 @@ public class HashMethods {
             sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
         return sb.toString();
-    }*/
+    }
 
-    //using Hash Algorithm SHA-512
-    public static String hashPassword(String pw, byte[] salt) {
+
+
+    /*public static String hashPassword(String pw, String salt) {
         try {
-            KeySpec spec = new PBEKeySpec(pw.toCharArray(), salt, 65536, 128);
+            KeySpec spec = new PBEKeySpec(pw.toCharArray(), salt.getBytes(), 65536, 128);
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 
             byte[] hash = factory.generateSecret(spec).getEncoded();
-
             return hash.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -66,5 +60,5 @@ public class HashMethods {
         }
 
         return null;
-    }
+    }*/
 }
