@@ -32,7 +32,7 @@ public class User {
 
     private String telephoneNumber;
 
-    private String salt;
+    private byte[] salt;
 
     public User(String email,String pw, String phone){
         setSalt(HashMethods.saltGenerator());
