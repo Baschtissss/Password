@@ -1,5 +1,6 @@
 package org.acme.password;
 
+import io.quarkus.test.Mock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
 import io.restassured.RestAssured;
@@ -67,5 +68,41 @@ public class UserResourceTest {
                 .statusCode(Response.Status.NOT_FOUND.getStatusCode());
     }
 
+    @Test
+    public void testForgotPassword(){
+        Mockito.when(repository.forgotPassword(ArgumentMatchers.anyString())).thenReturn("TWDK");
 
+        RestAssured.given().when()
+                .post("/api/user/resetCode?email=josef@gmail.com")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).body(CoreMatchers.is("TWDK"));
+    }
+
+    @Test
+    public void testCheckCode(){
+        Mockito.when(repository.checkCode(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenReturn("TWKE");
+
+        RestAssured.given().when()
+                .get("/api/user/resetCode?email=josef@gmail.com&code=TWDK")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).body(CoreMatchers.is("TWKE"));
+    }
+
+    @Test
+    public void testChangePassword(){
+        Mockito.when(repository.changePassword(ArgumentMatchers.anyString(),ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenReturn(true);
+
+        RestAssured.given().when()
+                .put("/api/user/changePassword?email=josef@gmail.com&oldPW=TWKE&newPw=Sicher123")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).body(CoreMatchers.is("true"));
+    }
+
+    @Test
+    public void testChangePasswordWithMissingParam(){
+        RestAssured.given().when()
+                .put("/api/user/changePassword?email=josef@gmail.com&oldPW=TWKE")
+                .then()
+                .statusCode(Response.Status.BAD_REQUEST.getStatusCode());
+    }
 }
