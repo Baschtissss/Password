@@ -4,6 +4,7 @@ package org.acme.password.user;
 import org.acme.password.ResetCode;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -16,10 +17,16 @@ public class UserResource {
 
     @POST
     public Response register(final User user) {
+
         if (user == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        final User createdUser = userRepository.registerUser(user);
+        final User createdUser;
+        try {
+            createdUser = userRepository.registerUser(user);
+        }catch(ConstraintViolationException e){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
         if(createdUser == null){
             System.out.println("Nutzer existiert bereits!");
             return Response.status(Response.Status.CONFLICT).build();
@@ -66,7 +73,8 @@ public class UserResource {
             System.out.println("Kein User wurde gefunden!");
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        System.out.println("Code "+code+" wurde für "+ email+" erstellt!");
+        System.out.println("EMAIL an "+email);
+        System.out.println("Code: "+code);
 
         return Response.ok(code).build();
     }
